@@ -56,7 +56,7 @@
             <div>
                 <label for="image">Immagini</label>
             </div>
-               <input type="file" id="image" name="image" required>
+               <input type="file" id="image" name="image">
            </div>
        </div>
       </div>

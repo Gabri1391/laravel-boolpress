@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\PostPublicationMail;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -75,7 +77,10 @@ class PostController extends Controller
 
         $post->save();
         
-       
+        // Creato il post invio una mail di conferma all'utente
+        $mail = new PostPublicationMail();
+        $user_email = Auth::user()->email;
+        Mail::to($user_email)->send($mail);
 
         return redirect()->route('admin.posts.show', $post)
         ->with('message', 'Il post è stato creato con successo')

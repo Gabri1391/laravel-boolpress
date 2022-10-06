@@ -10,11 +10,11 @@
 
 @if ($post->exists)
 {{-- Qui vado nel post di modifica --}}
-<form action="{{ route('admin.posts.update', $post)}}" method="POST">
+<form action="{{ route('admin.posts.update', $post)}}" enctype="multipart/form-data" method="POST">
     @method('PUT')
 @else
 {{-- Qui sto facendo una creazione --}}
-<form action="{{ route('admin.posts.store')}}" method="POST">
+<form action="{{ route('admin.posts.store')}}" enctype="multipart/form-data" method="POST">
 @endif
     @csrf
       <div class="row">
@@ -53,10 +53,10 @@
 
        <div class="col-12">
            <div class="form-group">
-               <label for="image">Image</label>
-               <textarea type="url" class="form-control" id="image" name="image" required>
-                   {{ old('image', $post->image) }}
-               </textarea>
+            <div>
+                <label for="image">Immagini</label>
+            </div>
+               <input type="file" id="image" name="image" required>
            </div>
        </div>
       </div>
@@ -67,7 +67,6 @@
        <a href="{{ route('admin.posts.index')}}" class="btn btn-secondary mr-5">
            <i class="fa-solid fa-rotate-left mr-2"></i>Torna indietro
        </a>
-
        <button class="btn btn-success" type="submit">
        <i class="fa-solid fa-floppy-disk mr-2"></i>Salva
        </button>

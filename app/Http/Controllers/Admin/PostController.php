@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -45,15 +46,16 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|min:3|unique:posts',
             'content' => 'required|string',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes: jpeg,jpg,png',
             'category_id' => 'nullable|exists:categories,id'
         ],
         [
             'title.required' => 'Il titolo é obbligatorio',
             'title.min' => 'Il titolo deve essere lungo almeno 5 caratteri',
             'title.unique' => "Esiste già un post con questo titolo",
-            'image.url' => 'Url non valido',
-            'category_id.exists' => 'Categoria inesistente'
+            'category_id.exists' => 'Categoria inesistente',
+            'image.image' => 'Il file selezionato non é di tipo immagine',
+            'image.mimes' => 'Sono supprtati solo file immagine jpeg,jpg,png'
         ]);
 
         $data = $request->all();
@@ -64,6 +66,10 @@ class PostController extends Controller
         $post->user_id = Auth::id();
 
         $post->save();
+
+        if(array_key_exists('image', $data)){
+            Storage::put('post_img', $data['image']);
+        }
 
         return redirect()->route('admin.posts.show', $post)
         ->with('message', 'Il post è stato creato con successo')

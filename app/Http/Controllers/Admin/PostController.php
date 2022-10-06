@@ -8,8 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Mail\PostPublicationMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\PostPublicationMail;
 
 class PostController extends Controller
 {

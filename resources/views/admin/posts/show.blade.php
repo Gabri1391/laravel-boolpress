@@ -10,7 +10,7 @@
 
     <div class="clearfix ml-5 mt-3"></div>
         @if ($post->image)
-            <img class="float-left ml-3 mr-3 img-fluid" width="100px" src="{{ asset('storage/'.$post->image) }}" alt="{{ $post->title }}">
+            <img class="float-left ml-3 mr-3 img-fluid" width="300px" src="{{ asset('storage/'.$post->image) }}" alt="{{ $post->title }}">
         @endif
         <p><strong>Categoria: </strong>
             @if ($post->category)

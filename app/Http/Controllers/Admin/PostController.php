@@ -65,11 +65,17 @@ class PostController extends Controller
         
         $post->user_id = Auth::id();
 
-        $post->save();
-
-        if(array_key_exists('image', $data)){
-            Storage::put('post_img', $data['image']);
+         // Controllo se cè la chiave image nei data
+         if(array_key_exists('image', $data)){
+            // la inserisco nella cartella che voglio che andrà nel percorso 'storage/app/public/(post_img in questo caso)'e la trasformo in una variabile
+           $image_url = Storage::put('post_img', $data['image']);
+        //    assegno la varibile alla immagine del post
+           $post->image = $image_url;
         }
+
+        $post->save();
+        
+       
 
         return redirect()->route('admin.posts.show', $post)
         ->with('message', 'Il post è stato creato con successo')

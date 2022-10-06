@@ -20,7 +20,7 @@ class PostSeeder extends Seeder
             $post->title = $faker->text(20);
             $post->user_id = Arr::random($user_ids);
             $post->content = $faker->paragraphs(2, true);
-            $post->image = $faker->imageUrl(200, 200);
+            // $post->image = $faker->imageUrl(200, 200);
 
             $post->save();
         }

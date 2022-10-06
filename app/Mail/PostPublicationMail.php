@@ -28,6 +28,6 @@ class PostPublicationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail/posts/publication');
+        return $this->view('mails/posts/publication');
     }
 }

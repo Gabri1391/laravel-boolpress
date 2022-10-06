@@ -115,7 +115,33 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+
+        $request->validate([
+            'title' => 'required|string|min:3|unique:posts',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes: jpeg,jpg,png',
+            'category_id' => 'nullable|exists:categories,id'
+        ],
+        [
+            'title.required' => 'Il titolo é obbligatorio',
+            'title.min' => 'Il titolo deve essere lungo almeno 5 caratteri',
+            'title.unique' => "Esiste già un post con questo titolo",
+            'category_id.exists' => 'Categoria inesistente',
+            'image.image' => 'Il file selezionato non é di tipo immagine',
+            'image.mimes' => 'Sono supprtati solo file immagine jpeg,jpg,png'
+        ]);
+
         $data = $request->all();
+
+         // Controllo se cè la chiave image nei data
+         if(array_key_exists('image', $data)){
+            // Se c'era gia un immagine prima della modifica cancellala
+            if($post->image) Storage::delete($post->image);
+            // la inserisco nella cartella che voglio che andrà nel percorso 'storage/app/public/(post_img in questo caso)'e la trasformo in una variabile
+           $image_url = Storage::put('post_img', $data['image']);
+        //    assegno la varibile alla immagine del post
+           $post->image = $image_url;
+        }
         
         // Con la funzione update,sottobanco sta facendo fill and save insieme
         $post->update($data);
@@ -134,6 +160,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if($post->image) Storage::delete($post->image);
         $post->delete();
 
         return redirect()->route('admin.posts.index')
